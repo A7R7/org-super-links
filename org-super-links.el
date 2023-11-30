@@ -88,9 +88,8 @@ function will be called for every link.
 Default is the variable `org-make-link-desciption-function'.")
 
 (defvar org-super-links-search-function
-  (cond ((require 'helm-org-ql nil 'no-error) "helm-org-ql")
-	((require 'helm-org-rifle nil 'no-error) "helm-org-rifle")
-	(t 'org-super-links-get-location))
+  (cond
+	      (t 'org-super-links-get-location))
   "The interface to use for finding target links.
 This can be a string with one of the values 'helm-org-ql',
 'helm-org-rifle', or a function.  If you provide a custom
@@ -300,11 +299,12 @@ a separator ' -> '."
   "Insert backlink to LINK with DESC.
 Where the backlink is placed is determined by the variable `org-super-links-backlink-into-drawer'."
   (let* ((org-log-into-drawer (org-super-links-backlink-into-drawer))
-	 (description (org-super-links-default-description-formatter link desc))
-	 (beg (org-log-beginning t)))
+	       (description (org-super-links-default-description-formatter link desc))
+	       (beg (org-log-beginning t)))
     (goto-char beg)
     (insert (org-super-links-backlink-prefix))
-    (insert (org-link-make-string link description))
+    ;; (insert (org-link-make-string link description))
+    (org-insert-link nil link description)
     (insert (org-super-links-backlink-postfix))
     (org-indent-region beg (point))))
 
